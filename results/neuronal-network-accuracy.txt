@@ -1,10 +1,10 @@
 model: 15puzzle_solver_model_v21.h5
-
-TRIANING_FILES = 27367
-VALIDATION_FILES = 3000
-BATCH_SIZE = 300
-EPOCHS = 5
-total_states = 1510673
+constantes usadas:
+    TRIANING_FILES = 27367
+    VALIDATION_FILES = 3000
+    BATCH_SIZE = 300
+    EPOCHS = 5
+    total_states = 1.510.673
 
 ITERACIONES EN PRIMERA EPOCH:
 
