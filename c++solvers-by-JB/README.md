@@ -3,4 +3,4 @@ CODIGO HECHO POR JORGE BAIER
 PARA CORRER:
 
 make
-./rtaa 1 < problems
+./ida 1 < problems
