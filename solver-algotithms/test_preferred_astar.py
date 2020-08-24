@@ -32,7 +32,7 @@ print('%5s%10s%10s%10s%10s%10s' %
 i = -1
 for problem in problems:
     i += 1
-    if i+1 < 48:
+    if i+1 <= 48:
         continue
     s = PrefAstar(problem, heuristic, 1)
     result = s.search()
