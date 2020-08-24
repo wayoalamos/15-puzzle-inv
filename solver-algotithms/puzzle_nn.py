@@ -9,7 +9,8 @@ class Puzzle:
     goal24 = list(range(25))
     goal15 = list(range(16))
     goal8 = list(range(9))
-    model = keras.models.load_model('15puzzle_solver_model.h5')
+    model = keras.models.load_model(
+        '../neuronal-network/saved-neuronal-networks/15puzzle_solver_model_v20.h5')
 
     MaxPDB = 5
     pdb = []

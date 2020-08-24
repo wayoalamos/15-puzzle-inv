@@ -12,7 +12,6 @@ class PrefAstar:
         self.weight = weight
         self.heuristic = heuristic
 
-
     def estimate_suboptimality(self):
         fmin = 100000000
         if self.solution is not None:
@@ -26,7 +25,6 @@ class PrefAstar:
                     fmin = node.g + node.h
             return self.solution.g/fmin
 
-
     def fvalue(self, g, h):
         return 10000*(g + self.weight*h) - g
 
@@ -39,8 +37,9 @@ class PrefAstar:
         initial_node.g = 0
         initial_node.h[0] = self.heuristic(self.initial_state)
         initial_node.h[1] = initial_node.h[0]
-        initial_node.key[0] = self.fvalue(initial_node.g,initial_node.h[0])  # asignamos el valor f
-        initial_node.key[1] = self.fvalue(initial_node.g,initial_node.h[1])
+        initial_node.key[0] = self.fvalue(
+            initial_node.g, initial_node.h[0])  # asignamos el valor f
+        initial_node.key[1] = self.fvalue(initial_node.g, initial_node.h[1])
         self.open.insert(initial_node)
         # para cada estado alguna vez generado, generated almacena
         # el Node que le corresponde
@@ -48,21 +47,24 @@ class PrefAstar:
         self.generated[self.initial_state] = initial_node
         current = 0
         while not self.open.is_empty() or not self.preferred.is_empty():
+            queue = None
             if current == 1 and not self.preferred.is_empty():
                 queue = self.preferred
+                current = 0
             elif current == 0 and not self.open.is_empty():
                 queue = self.open
-            else:
-                print("error in loop")
+                current = 1
+            current = (current + 1) % 2
+            if not queue:
                 continue
-            n = queue.extract()   # extrae n de la open
-#            if queue == self.preferred:
-#                print('{}/'.format(n.h),end='')
-#                sys.stdout.flush()
+
+            n = queue.extract()
+
             if n.state.is_goal():
                 self.end_time = time.process_time()
                 self.solution = n
                 return n
+
             succ = n.state.successors()
             self.expansions += 1
 
@@ -73,7 +75,7 @@ class PrefAstar:
                 if is_new or path_cost < child_node.g:
                     # si vemos el estado child_state por primera vez o lo vemos por
                     # un mejor camino, entonces lo agregamos a open
-                    if is_new: # creamos el nodo de child_state
+                    if is_new:  # creamos el nodo de child_state
                         child_node = MultiNode(child_state, n)
                         child_node.h[0] = self.heuristic(child_state)
                         child_node.h[1] = child_node.h[0]
@@ -82,12 +84,16 @@ class PrefAstar:
                     child_node.parent = n
                     child_node.g = path_cost
                     for i in range(2):
-                        child_node.key[i] = self.fvalue(child_node.g,child_node.h[i]) # actualizamos el f de child_node
+                        # actualizamos el f de child_node
+                        child_node.key[i] = self.fvalue(
+                            child_node.g, child_node.h[i])
                     if child_node.state.preferred > 0.5 and current == 1:
-                        self.preferred.insert(child_node) # inserta child_node a la open si no esta en la open, inserta en open preferida
+                        self.preferred.insert(child_node)
                     elif child_node.state.preferred > 0.1:
-                        self.open.insert(child_node) # inserta en open no preferidaa
+                        # inserta en open no preferidaa
+                        self.open.insert(child_node)
 
-        print("Error esto no deberia pasar!!!!!!!!!!!!!!")
-        self.end_time = time.process_time() # en caso contrario, modifica la posicion de child_node en open
+        print("No se encontró solucion al problema")
+        # en caso contrario, modifica la posicion de child_node en open
+        self.end_time = time.process_time()
         return None

@@ -1,40 +1,51 @@
 from puzzle_nn import Puzzle
 from preferred_astar import PrefAstar
 
-def load_problems(problems):  ## carga los problemas en memoria
+
+def load_problems(amount_of_problems=False):  # carga los problemas en memoria
     f = open('problems.txt')
+    problems = []
+    counter = 0
     while f:
+        counter += 1
+        if amount_of_problems and counter > amount_of_problems:
+            break
         line = f.readline()
         line = line.rstrip()
         numlist = line.split(' ')
         if len(numlist) < 15:
-            return
+            break
         problems.append(Puzzle([int(x) for x in numlist[1:]]))
+    return problems
 
 
 show_solutions = False        # mostramos las soluciones?
+AMOUNT_OF_PROBLEMS = False
 
-heuristic = Puzzle.manhattan       # heuristica basda en distancia manhattan
+problems = load_problems(AMOUNT_OF_PROBLEMS)
+heuristic = Puzzle.manhattan
+total_time, total_cost, total_expansions = 0, 0, 0
 
-print('%5s%10s%10s%10s%10s%10s' % ('#prob','#exp', '#gen', '|sol|', 'tiempo','maxsubopt'))
-problems = []
-load_problems(problems)
+print('%5s%10s%10s%10s%10s%10s' %
+      ('#prob', '#exp', '#gen', '|sol|', 'tiempo', 'maxsubopt'))
 
-total_time = 0
-total_cost = 0
-total_expansions = 0
-#num_problems = len(problems) # cambiar si quieres ejecutar sobre todos los problemas
-total_problems = len(problems)             # solo ejecutamos los primeros 10 problemas
-for prob in range(0, total_problems):
-    init = problems[prob]
-    s = PrefAstar(init, heuristic, 1) # agregar un tercer parámetro una vez que lo hayas transformado en Weighted A*
+i = -1
+for problem in problems:
+    i += 1
+    if i+1 < 48:
+        continue
+    s = PrefAstar(problem, heuristic, 1)
     result = s.search()
-    print('%5d%10d%10d%10d%10.2f' % (prob+1, s.expansions, len(s.generated), result.g, s.end_time-s.start_time))
+    print('%5d%10d%10d%10d%10.2f' % (i+1, s.expansions,
+                                     len(s.generated), result.g, s.end_time-s.start_time))
+
     total_time += s.end_time - s.start_time
     total_cost += result.g
     total_expansions += s.expansions
+
     if show_solutions:
         print(result.trace())
-print('Tiempo total:        %.2f'%(total_time))
-print('Expansiones totales: %d'%(total_expansions))
-print('Costo total:         %d'%(total_cost))
+
+print('Tiempo total:        %.2f' % (total_time))
+print('Expansiones totales: %d' % (total_expansions))
+print('Costo total:         %d' % (total_cost))
