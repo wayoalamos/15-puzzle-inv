@@ -83,3 +83,9 @@ elif child_node.state.preferred > 0.1:
    74    234596    485217        52    208.69
    75    520985   1074625        56    499.34
    76    152206    329508        57    144.81
+
+largo total: 3992
+expansiones totales: 13744573
+
+promedio de largo por problema 59.582089552238806
+promedio de expansiones por problema 205142.8805970149

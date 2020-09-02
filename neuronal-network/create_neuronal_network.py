@@ -18,10 +18,10 @@ def create_nn(n_input_layers, n_output_layers):
     input = Input(shape=(n_input_layers,))
 
     # Hidden layer
-    # hidden_layer = Dense(units=16*10, activation='relu')(input)
-    hidden_layer = Dense(units=16*5, activation='relu')(input)
-    # hidden_layer = Dense(units=16, activation='relu')(hidden_layer)
-    #hidden_layer = Dense(units=16, activation='relu')(hidden_layer)
+    hidden_layer = Dense(units=16*10, activation='relu')(input)
+    hidden_layer = Dense(units=16*5, activation='relu')(hidden_layer)
+    hidden_layer = Dense(units=16, activation='relu')(hidden_layer)
+    hidden_layer = Dense(units=16, activation='relu')(hidden_layer)
 
     # Output layer
     output_layer = Dense(units=n_output_layers,
