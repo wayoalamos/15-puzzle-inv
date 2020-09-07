@@ -31,6 +31,8 @@ ax.scatter(examples, results)
 
 plt.xlabel("Cantidad de ejercicios utilizados")
 plt.ylabel("Exactitud de prediccion de la red neuronal")
-plt.show()
+# plt.show()
+plt.savefig("graph4.png", dpi=300)
+
 
 # plot_bar_x()
